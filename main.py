@@ -90,7 +90,7 @@ st.subheader("Select a Future Date for Forecasting")
 future_date = st.date_input("Choose a date", value=datetime(2025, 6, 1), min_value=datetime.now(), max_value=datetime(2026, 12, 31))
 
 # Calculate forecast steps
-last_date = close_prices.index[-1]
+last_date = close_prices.index[-1].date()  # Convert pandas.Timestamp to datetime.date
 forecast_steps = (future_date - last_date).days
 if forecast_steps <= 0:
     st.error("Please select a future date.")
@@ -109,7 +109,7 @@ ax.set_xlabel('Date')
 ax.set_ylabel('Close Price (USD)')
 ax.legend()
 st.pyplot(fig)
-st.write(f"Forecasted values from {last_date.date()} to {future_date.date()} are shown above.")
+st.write(f"Forecasted values from {last_date} to {future_date} are shown above.")
 
 # Calculation of the daily returns
 returns = close_prices.pct_change().dropna() * 100
